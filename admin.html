@@ -390,6 +390,41 @@
         .cancel-edit:hover {
             background: #636e72;
         }
+        
+        .payment-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .payment-option {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .payment-option:hover {
+            border-color: #3498db;
+        }
+        
+        .payment-option.selected {
+            border-color: #3498db;
+            background-color: #e8f4fc;
+        }
+        
+        .payment-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .payment-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -455,8 +490,28 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="paypalLink">PayPal Link</label>
-                        <input type="url" id="paypalLink" class="form-control" placeholder="Enter PayPal payment link" required>
+                        <label for="paymentLink">Payment Link</label>
+                        <input type="url" id="paymentLink" class="form-control" placeholder="Enter payment link" required>
+                        <small>Link to payment page (PayPal, Stripe, Gumroad, etc.)</small>
+                        
+                        <div class="payment-options">
+                            <div class="payment-option" data-payment="paypal">
+                                <i class="fab fa-paypal payment-icon" style="color: #003087;"></i>
+                                <div class="payment-name">PayPal</div>
+                            </div>
+                            <div class="payment-option" data-payment="stripe">
+                                <i class="fab fa-stripe payment-icon" style="color: #6772e5;"></i>
+                                <div class="payment-name">Stripe</div>
+                            </div>
+                            <div class="payment-option" data-payment="gumroad">
+                                <i class="fas fa-shopping-cart payment-icon" style="color: #ffa724;"></i>
+                                <div class="payment-name">Gumroad</div>
+                            </div>
+                            <div class="payment-option" data-payment="other">
+                                <i class="fas fa-link payment-icon" style="color: #7f8c8d;"></i>
+                                <div class="payment-name">Other</div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="button-group">
@@ -496,6 +551,7 @@
         const cancelEditBtn = document.getElementById('cancelEditBtn');
         const formTitle = document.getElementById('formTitle');
         const editProductId = document.getElementById('editProductId');
+        const paymentOptions = document.querySelectorAll('.payment-option');
         
         // Function to show message
         function showMessage(message, type) {
@@ -590,6 +646,35 @@
             }
         });
         
+        // Payment option selection
+        paymentOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove selected class from all options
+                paymentOptions.forEach(opt => opt.classList.remove('selected'));
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Update placeholder based on selected payment method
+                const paymentMethod = this.getAttribute('data-payment');
+                const paymentLinkInput = document.getElementById('paymentLink');
+                
+                switch(paymentMethod) {
+                    case 'paypal':
+                        paymentLinkInput.placeholder = 'Enter PayPal payment link';
+                        break;
+                    case 'stripe':
+                        paymentLinkInput.placeholder = 'Enter Stripe payment link';
+                        break;
+                    case 'gumroad':
+                        paymentLinkInput.placeholder = 'Enter Gumroad product link';
+                        break;
+                    default:
+                        paymentLinkInput.placeholder = 'Enter payment link';
+                }
+            });
+        });
+        
         // Render product list
         function renderProductList() {
             const products = JSON.parse(localStorage.getItem('products')) || [];
@@ -668,7 +753,7 @@
             document.getElementById('productPrice').value = priceValue;
             
             document.getElementById('documentationLink').value = product.documentationLink || '';
-            document.getElementById('paypalLink').value = product.paypalLink;
+            document.getElementById('paymentLink').value = product.paymentLink;
             
             // Set image preview
             imagePreview.src = product.image;
@@ -697,6 +782,10 @@
             imagePreview.style.display = 'none';
             removeImage.style.display = 'none';
             
+            // Reset payment options
+            paymentOptions.forEach(opt => opt.classList.remove('selected'));
+            document.getElementById('paymentLink').placeholder = 'Enter payment link';
+            
             editProductId.value = '';
             formTitle.textContent = 'Add New Product';
             addProductBtn.style.display = 'inline-block';
@@ -713,7 +802,7 @@
             const price = document.getElementById('productPrice').value;
             const image = imagePreview.src;
             const documentationLink = document.getElementById('documentationLink').value;
-            const paypalLink = document.getElementById('paypalLink').value;
+            const paymentLink = document.getElementById('paymentLink').value;
             
             // Validate image
             if (!image || imagePreview.style.display === 'none') {
@@ -736,7 +825,7 @@
                     price: `US$${price}`,
                     image: image,
                     documentationLink: documentationLink,
-                    paypalLink: paypalLink
+                    paymentLink: paymentLink
                 };
                 
                 // Save back to localStorage
@@ -762,7 +851,7 @@
                     price: `US$${price}`,
                     image: image,
                     documentationLink: documentationLink,
-                    paypalLink: paypalLink,
+                    paymentLink: paymentLink,
                     dateAdded: new Date().toISOString()
                 };
                 
