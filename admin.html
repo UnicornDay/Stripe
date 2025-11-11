@@ -123,6 +123,14 @@
             background: #636e72;
         }
         
+        .btn-warning {
+            background: #f39c12;
+        }
+        
+        .btn-warning:hover {
+            background: #e67e22;
+        }
+        
         .button-group {
             display: flex;
             justify-content: center;
@@ -292,6 +300,13 @@
             font-size: 0.7rem;
         }
         
+        .product-actions {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 8px;
+        }
+        
         .delete-btn {
             background: #e74c3c;
             color: white;
@@ -300,11 +315,24 @@
             padding: 5px 10px;
             cursor: pointer;
             font-size: 0.8rem;
-            margin-top: 8px;
         }
         
         .delete-btn:hover {
             background: #c0392b;
+        }
+        
+        .edit-btn {
+            background: #f39c12;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .edit-btn:hover {
+            background: #e67e22;
         }
         
         .tabs {
@@ -333,6 +361,35 @@
         .tab-content.active {
             display: block;
         }
+        
+        /* Edit mode styling */
+        .edit-mode .btn-success {
+            display: none;
+        }
+        
+        .edit-mode .btn-warning {
+            display: inline-block;
+        }
+        
+        .form-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .cancel-edit {
+            background: #7f8c8d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .cancel-edit:hover {
+            background: #636e72;
+        }
     </style>
 </head>
 <body>
@@ -350,11 +407,16 @@
             
             <div id="message" class="message"></div>
             
-            <!-- Add Product Tab -->
+            <!-- Add/Edit Product Tab -->
             <div class="tab-content active" id="add-product">
-                <h2>Add New Product</h2>
+                <div class="form-title">
+                    <h2 id="formTitle">Add New Product</h2>
+                    <button id="cancelEditBtn" class="cancel-edit" style="display: none;">Cancel Edit</button>
+                </div>
                 
                 <form id="productForm">
+                    <input type="hidden" id="editProductId" value="">
+                    
                     <div class="form-group">
                         <label for="productName">Product Name</label>
                         <input type="text" id="productName" class="form-control" placeholder="Enter product name" required>
@@ -398,7 +460,8 @@
                     </div>
                     
                     <div class="button-group">
-                        <button type="submit" class="btn btn-success">Add Product</button>
+                        <button type="submit" class="btn btn-success" id="addProductBtn">Add Product</button>
+                        <button type="submit" class="btn btn-warning" id="updateProductBtn" style="display: none;">Update Product</button>
                         <button type="button" id="clearBtn" class="btn btn-secondary">Clear Form</button>
                     </div>
                 </form>
@@ -428,6 +491,11 @@
         const productList = document.getElementById('productList');
         const tabs = document.querySelectorAll('.tab');
         const tabContents = document.querySelectorAll('.tab-content');
+        const addProductBtn = document.getElementById('addProductBtn');
+        const updateProductBtn = document.getElementById('updateProductBtn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const formTitle = document.getElementById('formTitle');
+        const editProductId = document.getElementById('editProductId');
         
         // Function to show message
         function showMessage(message, type) {
@@ -546,7 +614,10 @@
                     <img src="${product.image}" alt="${product.name}">
                     <h4>${product.name}</h4>
                     <div class="price">${product.price}</div>
-                    <button class="delete-btn" data-index="${index}">Delete</button>
+                    <div class="product-actions">
+                        <button class="edit-btn" data-index="${index}">Edit</button>
+                        <button class="delete-btn" data-index="${index}">Delete</button>
+                    </div>
                 `;
                 
                 productList.appendChild(productItem);
@@ -557,6 +628,14 @@
                 button.addEventListener('click', function() {
                     const index = parseInt(this.getAttribute('data-index'));
                     deleteProduct(index);
+                });
+            });
+            
+            // Add event listeners to edit buttons
+            document.querySelectorAll('.edit-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    editProduct(index);
                 });
             });
         }
@@ -575,7 +654,57 @@
             }
         }
         
-        // Handle form submission
+        // Edit product
+        function editProduct(index) {
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            const product = products[index];
+            
+            // Populate form with product data
+            document.getElementById('productName').value = product.name;
+            document.getElementById('productDescription').value = product.description || '';
+            
+            // Extract price value (remove "US$" prefix)
+            const priceValue = product.price.replace('US$', '');
+            document.getElementById('productPrice').value = priceValue;
+            
+            document.getElementById('documentationLink').value = product.documentationLink || '';
+            document.getElementById('paypalLink').value = product.paypalLink;
+            
+            // Set image preview
+            imagePreview.src = product.image;
+            imagePreview.style.display = 'block';
+            removeImage.style.display = 'block';
+            
+            // Set edit mode
+            editProductId.value = index;
+            formTitle.textContent = 'Edit Product';
+            addProductBtn.style.display = 'none';
+            updateProductBtn.style.display = 'inline-block';
+            cancelEditBtn.style.display = 'inline-block';
+            
+            // Switch to add product tab
+            document.querySelector('[data-tab="add-product"]').click();
+        }
+        
+        // Cancel edit mode
+        cancelEditBtn.addEventListener('click', function() {
+            resetForm();
+        });
+        
+        // Reset form to add mode
+        function resetForm() {
+            productForm.reset();
+            imagePreview.style.display = 'none';
+            removeImage.style.display = 'none';
+            
+            editProductId.value = '';
+            formTitle.textContent = 'Add New Product';
+            addProductBtn.style.display = 'inline-block';
+            updateProductBtn.style.display = 'none';
+            cancelEditBtn.style.display = 'none';
+        }
+        
+        // Handle form submission for adding product
         productForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -592,40 +721,72 @@
                 return;
             }
             
-            // Create new product object
-            const newProduct = {
-                id: Date.now(), // Simple ID generation
-                name: name,
-                description: description,
-                price: `US$${price}`,
-                image: image,
-                documentationLink: documentationLink,
-                paypalLink: paypalLink,
-                dateAdded: new Date().toISOString()
-            };
+            // Check if we're in edit mode
+            const isEditMode = editProductId.value !== '';
             
-            // Get existing products from localStorage
-            let products = JSON.parse(localStorage.getItem('products')) || [];
-            
-            // Add new product
-            products.push(newProduct);
-            
-            // Save back to localStorage
-            localStorage.setItem('products', JSON.stringify(products));
-            
-            // Show success message
-            showMessage('Product added successfully!', 'success');
-            
-            // Reset form
-            productForm.reset();
-            imagePreview.style.display = 'none';
-            removeImage.style.display = 'none';
-            
-            // Update product list
-            renderProductList();
-            
-            // Switch to manage products tab
-            document.querySelector('[data-tab="manage-products"]').click();
+            if (isEditMode) {
+                // Update existing product
+                const index = parseInt(editProductId.value);
+                let products = JSON.parse(localStorage.getItem('products')) || [];
+                
+                products[index] = {
+                    ...products[index],
+                    name: name,
+                    description: description,
+                    price: `US$${price}`,
+                    image: image,
+                    documentationLink: documentationLink,
+                    paypalLink: paypalLink
+                };
+                
+                // Save back to localStorage
+                localStorage.setItem('products', JSON.stringify(products));
+                
+                // Show success message
+                showMessage('Product updated successfully!', 'success');
+                
+                // Reset form
+                resetForm();
+                
+                // Update product list
+                renderProductList();
+                
+                // Switch to manage products tab
+                document.querySelector('[data-tab="manage-products"]').click();
+            } else {
+                // Create new product object
+                const newProduct = {
+                    id: Date.now(), // Simple ID generation
+                    name: name,
+                    description: description,
+                    price: `US$${price}`,
+                    image: image,
+                    documentationLink: documentationLink,
+                    paypalLink: paypalLink,
+                    dateAdded: new Date().toISOString()
+                };
+                
+                // Get existing products from localStorage
+                let products = JSON.parse(localStorage.getItem('products')) || [];
+                
+                // Add new product
+                products.push(newProduct);
+                
+                // Save back to localStorage
+                localStorage.setItem('products', JSON.stringify(products));
+                
+                // Show success message
+                showMessage('Product added successfully!', 'success');
+                
+                // Reset form
+                resetForm();
+                
+                // Update product list
+                renderProductList();
+                
+                // Switch to manage products tab
+                document.querySelector('[data-tab="manage-products"]').click();
+            }
             
             // Trigger storage event to update display page
             window.dispatchEvent(new Event('storage'));
@@ -633,9 +794,7 @@
         
         // Clear form button
         document.getElementById('clearBtn').addEventListener('click', function() {
-            productForm.reset();
-            imagePreview.style.display = 'none';
-            removeImage.style.display = 'none';
+            resetForm();
             showMessage('Form cleared', 'success');
         });
         
