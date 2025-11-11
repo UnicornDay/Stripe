@@ -173,31 +173,6 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
         
-        /* Debug Info */
-        .debug-info {
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-            font-family: monospace;
-            font-size: 0.9rem;
-            display: none;
-        }
-        
-        .debug-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #333;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            z-index: 1000;
-        }
-        
         /* Empty State */
         .empty-state {
             text-align: center;
@@ -278,12 +253,6 @@
         
         <h2 class="section-title">Our Premium Trading Tools</h2>
         
-        <!-- Debug Information -->
-        <div id="debugInfo" class="debug-info">
-            <h3>Debug Information:</h3>
-            <div id="debugContent">Loading...</div>
-        </div>
-        
         <div id="loadingState" class="loading">
             <div class="loading-spinner"></div>
             <p>Loading products...</p>
@@ -297,9 +266,6 @@
             <i class="fas fa-box-open"></i>
             <h3>No Products Available</h3>
             <p>Products will appear here once they are added.</p>
-            <p style="margin-top: 10px; font-size: 0.8rem; opacity: 0.7;">
-                Check browser console (F12) for detailed error information.
-            </p>
         </div>
         
         <footer>
@@ -307,38 +273,63 @@
         </footer>
     </div>
 
-    <button class="debug-toggle" onclick="toggleDebug()">Toggle Debug</button>
-
     <script>
-        // Debug information
-        let debugData = {
-            fetchStarted: false,
-            fetchCompleted: false,
-            fetchError: null,
-            productsLoaded: null,
-            currentUrl: window.location.href,
-            jsonUrl: 'products.json'
-        };
-
-        function updateDebugInfo() {
-            const debugContent = document.getElementById('debugContent');
-            if (debugContent) {
-                debugContent.innerHTML = `
-                    <strong>Current URL:</strong> ${debugData.currentUrl}<br>
-                    <strong>JSON URL:</strong> ${debugData.jsonUrl}<br>
-                    <strong>Fetch Started:</strong> ${debugData.fetchStarted}<br>
-                    <strong>Fetch Completed:</strong> ${debugData.fetchCompleted}<br>
-                    <strong>Fetch Error:</strong> ${debugData.fetchError || 'None'}<br>
-                    <strong>Products Loaded:</strong> ${debugData.productsLoaded ? debugData.productsLoaded.length : '0'}<br>
-                    <strong>Timestamp:</strong> ${new Date().toLocaleTimeString()}
-                `;
+        // Embedded JSON data - no external file needed
+        const productsData = [
+            {
+                "id": 1,
+                "name": "Stock Cluster Pro - AI-Powered Stock Grouping Tool",
+                "description": "AI-powered tool that groups stocks based on correlation and performance patterns for smarter portfolio construction.",
+                "price": "US$49",
+                "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop",
+                "documentationLink": "https://example.com/docs/stock-cluster",
+                "stripeLink": "https://buy.stripe.com/your-stripe-link-1"
+            },
+            {
+                "id": 2,
+                "name": "Pair Trading Backtest Notebook",
+                "description": "Comprehensive Jupyter notebook for backtesting pairs trading strategies with statistical analysis and visualization.",
+                "price": "US$39",
+                "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop",
+                "documentationLink": "https://example.com/docs/pair-trading",
+                "stripeLink": "https://buy.stripe.com/your-stripe-link-2"
+            },
+            {
+                "id": 3,
+                "name": "Candlestick Pattern Backtester",
+                "description": "Automated backtesting tool for candlestick pattern recognition and strategy validation across multiple timeframes.",
+                "price": "US$29",
+                "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=300&fit=crop",
+                "stripeLink": "https://buy.stripe.com/your-stripe-link-3"
+            },
+            {
+                "id": 4,
+                "name": "The Strategy Stress-Tester",
+                "description": "Robust stress testing framework to evaluate trading strategies under various market conditions and black swan events.",
+                "price": "US$19",
+                "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=300&fit=crop",
+                "documentationLink": "https://example.com/docs/stress-tester",
+                "stripeLink": "https://buy.stripe.com/your-stripe-link-4"
+            },
+            {
+                "id": 5,
+                "name": "Algorithmic Trading Strategy Backtester - Multi-Period Validator",
+                "description": "Advanced multi-period backtesting platform for algorithmic trading strategies with walk-forward analysis.",
+                "price": "US$59",
+                "image": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=300&fit=crop",
+                "documentationLink": "https://example.com/docs/algorithmic-backtester",
+                "stripeLink": "https://buy.stripe.com/your-stripe-link-5"
+            },
+            {
+                "id": 6,
+                "name": "Double Bottom Pattern Pro - Automated Trading Strategy",
+                "description": "Automated trading system specifically designed for double bottom pattern recognition and execution.",
+                "price": "US$99",
+                "image": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=300&fit=crop",
+                "documentationLink": "https://example.com/docs/double-bottom",
+                "stripeLink": "https://buy.stripe.com/your-stripe-link-6"
             }
-        }
-
-        function toggleDebug() {
-            const debugInfo = document.getElementById('debugInfo');
-            debugInfo.style.display = debugInfo.style.display === 'none' ? 'block' : 'none';
-        }
+        ];
 
         // Function to render products
         function renderProducts(products) {
@@ -346,16 +337,11 @@
             const emptyState = document.getElementById('emptyState');
             const loadingState = document.getElementById('loadingState');
             
-            console.log('Rendering products:', products);
-            debugData.productsLoaded = products;
-            updateDebugInfo();
-            
-            // Hide loading state
+            // Hide loading state immediately since data is embedded
             loadingState.style.display = 'none';
             
             // Show empty state if no products
             if (!products || products.length === 0) {
-                console.log('No products found or empty array');
                 container.style.display = 'none';
                 emptyState.style.display = 'block';
                 return;
@@ -396,73 +382,13 @@
                 
                 container.appendChild(productCard);
             });
-            
-            console.log(`Successfully rendered ${products.length} products`);
         }
         
-        // Function to load products from JSON file
-        function loadProductsFromJSON() {
-            console.log('Starting to fetch products.json...');
-            debugData.fetchStarted = true;
-            debugData.fetchCompleted = false;
-            debugData.fetchError = null;
-            updateDebugInfo();
-            
-            // Add cache busting to prevent caching issues
-            const url = 'products.json?' + new Date().getTime();
-            debugData.jsonUrl = url;
-            updateDebugInfo();
-            
-            fetch(url)
-                .then(response => {
-                    console.log('Response status:', response.status, response.statusText);
-                    console.log('Response URL:', response.url);
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
-                    }
-                    return response.json();
-                })
-                .then(products => {
-                    console.log('Successfully loaded products:', products);
-                    debugData.fetchCompleted = true;
-                    debugData.fetchError = null;
-                    updateDebugInfo();
-                    renderProducts(products);
-                })
-                .catch(error => {
-                    console.error('Error loading products:', error);
-                    debugData.fetchCompleted = true;
-                    debugData.fetchError = error.message;
-                    updateDebugInfo();
-                    
-                    // Show empty state if JSON loading fails
-                    document.getElementById('loadingState').style.display = 'none';
-                    document.getElementById('emptyState').style.display = 'block';
-                    
-                    // Add error details to empty state
-                    const emptyState = document.getElementById('emptyState');
-                    const errorDetails = document.createElement('div');
-                    errorDetails.style.marginTop = '15px';
-                    errorDetails.style.padding = '10px';
-                    errorDetails.style.background = 'rgba(255,0,0,0.1)';
-                    errorDetails.style.borderRadius = '5px';
-                    errorDetails.style.fontSize = '0.8rem';
-                    errorDetails.innerHTML = `<strong>Error:</strong> ${error.message}`;
-                    emptyState.appendChild(errorDetails);
-                });
-        }
-        
-        // Load and display products
+        // Load and display products immediately
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded, starting product load...');
-            console.log('Current page URL:', window.location.href);
-            updateDebugInfo();
-            loadProductsFromJSON();
+            // Use the embedded products data - no fetch needed!
+            renderProducts(productsData);
         });
-
-        // Initial debug update
-        updateDebugInfo();
     </script>
 </body>
 </html>
