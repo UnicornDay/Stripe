@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Trading Tools Marketplace</title>
+    <title>Premium Code Solutions Marketplace</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -121,7 +121,7 @@
             display: block;
             width: 100%;
             text-align: center;
-            background: #635bff;
+            background: #e74c3c;
             color: white;
             padding: 12px;
             border-radius: 8px;
@@ -132,7 +132,7 @@
         }
         
         .buy-btn:hover {
-            background: #5a54d1;
+            background: #c0392b;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
@@ -199,28 +199,6 @@
             font-size: 0.9rem;
             opacity: 0.8;
         }
-
-        /* Loading State */
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: white;
-        }
-
-        .loading-spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 4px solid white;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
         
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -247,16 +225,11 @@
 <body>
     <div class="container">
         <header>
-            <h1>Premium Trading Tools Marketplace</h1>
-            <p>Choose from our premium algorithmic trading solutions and take your trading to the next level.</p>
+            <h1>Ready to Get Started?</h1>
+            <p>Choose from our premium code solutions and take your project to the next level.</p>
         </header>
         
-        <h2 class="section-title">Our Premium Trading Tools</h2>
-        
-        <div id="loadingState" class="loading" style="display: none;">
-            <div class="loading-spinner"></div>
-            <p>Loading products...</p>
-        </div>
+        <h2 class="section-title">Our Premium Solutions</h2>
         
         <div class="products-grid" id="productsContainer">
             <!-- Products will be dynamically added here -->
@@ -265,80 +238,22 @@
         <div id="emptyState" class="empty-state" style="display: none;">
             <i class="fas fa-box-open"></i>
             <h3>No Products Available</h3>
-            <p>Products will appear here once they are added.</p>
+            <p>Products will appear here once they are added by the administrator.</p>
         </div>
         
         <footer>
-            <p>&copy; 2023 Premium Trading Tools. All rights reserved.</p>
+            <p>&copy; 2023 Premium Code Solutions. All rights reserved.</p>
         </footer>
     </div>
 
     <script>
-        // Embedded JSON data - no external file needed
-        const productsData = [
-            {
-                "id": 1,
-                "name": "Stock Cluster Pro - AI-Powered Stock Grouping Tool",
-                "description": "Automatically analyze and group stocks based on their price movements using advanced PCA and hierarchical clustering. This tool processes historical stock data from Google Sheets, applies dimensionality reduction with PCA, and intelligently clusters stocks into hierarchical groups for portfolio analysis. Ideal for investors and analysts looking to identify correlated assets and diversify their portfolios.",
-                "price": "US$5",
-                "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop",
-                "documentationLink": "https://example.com/docs/stock-cluster",
-                "stripeLink": "https://buy.stripe.com/your-stripe-link-1"
-            },
-            {
-                "id": 2,
-                "name": "Pair Trading Backtest Notebook",
-                "description": "Automatically selects top cointegrated forex pairs using statistical tests (ADF, half-life, correlation), computes hedge ratios, and executes trades based on z-score thresholds. Fully editable and ready for customization. Ideal for quant traders and researchers.",
-                "price": "US$5",
-                "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop",
-                "documentationLink": "https://example.com/docs/pair-trading",
-                "stripeLink": "https://buy.stripe.com/your-stripe-link-2"
-            },
-            {
-                "id": 3,
-                "name": "Candlestick Pattern Backtester",
-                "description": "Unlock the power of algorithmic trading with our sophisticated Candlestick Pattern Backtester. This powerful Python engine automatically scans, tests, and identifies the most profitable candlestick trading strategies for any stock, giving you a data-driven edge in the markets.",
-                "price": "US$5",
-                "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=300&fit=crop",
-                "stripeLink": "https://buy.stripe.com/your-stripe-link-3"
-            },
-            {
-                "id": 4,
-                "name": "The Strategy Stress-Tester",
-                "description": "Eliminate guesswork and avoid costly strategy failures. This isn't just code; it's a complete system to pressure-test your trading ideas. Our Python framework runs your strategies through the most brutal market environments, providing a clear "resume" of performance. You get a full breakdown of returns, drawdowns, and Sharpe ratios for each period. Includes a smart strategy combiner to find powerful synergies. Stop wondering if your strategy will hold up. Know for sure.",
-                "price": "US$5",
-                "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=300&fit=crop",
-                "documentationLink": "https://example.com/docs/stress-tester",
-                "stripeLink": "https://buy.stripe.com/your-stripe-link-4"
-            },
-            {
-                "id": 5,
-                "name": "Algorithmic Trading Strategy Backtester - Multi-Period Validator",
-                "description": "Automate your trading research. This advanced Python tool dynamically tests and identifies the most robust, high-performing trading strategies across multiple market conditions (bull/bear markets). It goes beyond simple backtesting by validating strategy consistency over 7 time periods, providing detailed trade logs, performance analytics, and actionable insights to help you build a more reliable trading system",
-                "price": "US$5",
-                "image": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=300&fit=crop",
-                "documentationLink": "https://example.com/docs/algorithmic-backtester",
-                "stripeLink": "https://buy.stripe.com/your-stripe-link-5"
-            },
-            {
-                "id": 6,
-                "name": "Double Bottom Pattern Pro - Automated Trading Strategy",
-                "description": "Unlock the power of technical analysis with our Double Bottom Pattern Pro — a sophisticated, automated trading system designed to identify and capitalize on one of the most reliable reversal patterns in the stock market. This strategy automatically spots double bottom formations, generates precise buy signals at neckline breakouts, and manages risk with a built-in 10% stop loss.",
-                "price": "US$5",
-                "image": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=300&fit=crop",
-                "documentationLink": "https://example.com/docs/double-bottom",
-                "stripeLink": "https://buy.stripe.com/your-stripe-link-6"
-            }
-        ];
-
         // Function to render products
         function renderProducts(products) {
             const container = document.getElementById('productsContainer');
             const emptyState = document.getElementById('emptyState');
-            const loadingState = document.getElementById('loadingState');
             
             // Show empty state if no products
-            if (!products || products.length === 0) {
+            if (products.length === 0) {
                 container.style.display = 'none';
                 emptyState.style.display = 'block';
                 return;
@@ -358,20 +273,20 @@
                     ? `<div class="docs-badge" title="Has documentation"><i class="fas fa-file-alt"></i></div>` 
                     : '';
                 
-                // Create docs button if product has documentation link
+                // Create docs button if product has documentation link - now it's a direct link
                 const docsButton = product.documentationLink 
                     ? `<a href="${product.documentationLink}" class="docs-btn" target="_blank">Documentation</a>` 
                     : '';
                 
                 productCard.innerHTML = `
                     ${docsBadge}
-                    <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.src='https://via.placeholder.com/300x200/3498db/ffffff?text=Product+Image'">
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
                     <div class="product-content">
                         <h3 class="product-title">${product.name}</h3>
                         ${product.description ? `<p class="product-description">${product.description}</p>` : ''}
                         <div class="product-bottom">
                             <div class="product-price">${product.price}</div>
-                            <a href="${product.stripeLink}" class="buy-btn" target="_blank">Buy Now</a>
+                            <a href="${product.paypalLink}" class="buy-btn" target="_blank">Buy</a>
                             ${docsButton}
                         </div>
                     </div>
@@ -381,15 +296,18 @@
             });
         }
         
-        // Load and display products immediately - NO FETCH!
+        // Load products from localStorage
         document.addEventListener('DOMContentLoaded', function() {
-            // Hide loading state immediately (we don't need it with embedded data)
-            document.getElementById('loadingState').style.display = 'none';
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            renderProducts(products);
             
-            // Use the embedded products data directly
-            renderProducts(productsData);
-            
-            console.log('Products loaded from embedded data:', productsData.length, 'products');
+            // Set up storage event listener to update when data changes
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'products') {
+                    const updatedProducts = JSON.parse(e.newValue) || [];
+                    renderProducts(updatedProducts);
+                }
+            });
         });
     </script>
 </body>
