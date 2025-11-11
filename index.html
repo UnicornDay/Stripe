@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Code Solutions Marketplace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            color: white;
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin: 30px 0;
+            color: white;
+            font-size: 1.8rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .product-image {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .product-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        
+        .product-title {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .product-description {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            flex-grow: 1;
+        }
+        
+        .product-bottom {
+            margin-top: auto;
+        }
+        
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .buy-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: #635bff; /* Stripe purple color */
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+        }
+        
+        .buy-btn:hover {
+            background: #5a54d1; /* Darker Stripe purple */
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .docs-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: #9b59b6;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .docs-btn:hover {
+            background: #8e44ad;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .docs-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #9b59b6;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: white;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid white;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            header h1 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Premium Trading Tools Marketplace</h1>
+            <p>Choose from our premium algorithmic trading solutions and take your trading to the next level.</p>
+        </header>
+        
+        <h2 class="section-title">Our Premium Trading Tools</h2>
+        
+        <div id="loadingState" class="loading">
+            <div class="loading-spinner"></div>
+            <p>Loading products...</p>
+        </div>
+        
+        <div class="products-grid" id="productsContainer" style="display: none;">
+            <!-- Products will be dynamically added here -->
+        </div>
+        
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <i class="fas fa-box-open"></i>
+            <h3>No Products Available</h3>
+            <p>Products will appear here once they are added.</p>
+        </div>
+        
+        <footer>
+            <p>&copy; 2023 Premium Trading Tools. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Function to render products
+        function renderProducts(products) {
+            const container = document.getElementById('productsContainer');
+            const emptyState = document.getElementById('emptyState');
+            const loadingState = document.getElementById('loadingState');
+            
+            // Hide loading state
+            loadingState.style.display = 'none';
+            
+            // Show empty state if no products
+            if (products.length === 0) {
+                container.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            // Show products grid
+            container.style.display = 'grid';
+            emptyState.style.display = 'none';
+            container.innerHTML = '';
+            
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                
+                // Create docs badge if product has documentation link
+                const docsBadge = product.documentationLink 
+                    ? `<div class="docs-badge" title="Has documentation"><i class="fas fa-file-alt"></i></div>` 
+                    : '';
+                
+                // Create docs button if product has documentation link
+                const docsButton = product.documentationLink 
+                    ? `<a href="${product.documentationLink}" class="docs-btn" target="_blank">Documentation</a>` 
+                    : '';
+                
+                productCard.innerHTML = `
+                    ${docsBadge}
+                    <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.src='https://via.placeholder.com/300x200/3498db/ffffff?text=Product+Image'">
+                    <div class="product-content">
+                        <h3 class="product-title">${product.name}</h3>
+                        ${product.description ? `<p class="product-description">${product.description}</p>` : ''}
+                        <div class="product-bottom">
+                            <div class="product-price">${product.price}</div>
+                            <a href="${product.stripeLink}" class="buy-btn" target="_blank">Buy Now</a>
+                            ${docsButton}
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(productCard);
+            });
+        }
+        
+        // Function to load products from JSON file
+        function loadProductsFromJSON() {
+            fetch('products.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(products => {
+                    console.log('Successfully loaded products from JSON:', products);
+                    renderProducts(products);
+                })
+                .catch(error => {
+                    console.error('Error loading products from JSON:', error);
+                    // Show empty state if JSON loading fails
+                    document.getElementById('loadingState').style.display = 'none';
+                    document.getElementById('emptyState').style.display = 'block';
+                });
+        }
+        
+        // Load and display products
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProductsFromJSON();
+        });
+    </script>
+</body>
+</html>
