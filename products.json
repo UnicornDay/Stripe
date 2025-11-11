@@ -1,0 +1,55 @@
+[
+    {
+        "id": 1,
+        "name": "Stock Cluster Pro - AI-Powered Stock Grouping Tool",
+        "description": "A fully responsive e-commerce template with shopping cart and payment integration.",
+        "price": "US$49",
+        "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop",
+        "documentationLink": "https://example.com/docs/ecommerce",
+        "stripeLink": "https://buy.stripe.com/your-stripe-link-1"
+    },
+    {
+        "id": 2,
+        "name": "Pair Trading Backtest Notebook",
+        "description": "Modern admin dashboard with charts, tables, and responsive design.",
+        "price": "US$39",
+        "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop",
+        "documentationLink": "https://example.com/docs/admin-dashboard",
+        "stripeLink": "https://buy.stripe.com/your-stripe-link-2"
+    },
+    {
+        "id": 3,
+        "name": "Candlestick Pattern Backtester",
+        "description": "Beautiful landing page template designed for mobile applications.",
+        "price": "US$29",
+        "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=300&fit=crop",
+        "stripeLink": "https://buy.stripe.com/your-stripe-link-3"
+    },
+    {
+        "id": 4,
+        "name": "The Strategy Stress-Tester",
+        "description": "A collection of reusable UI components for building web applications.",
+        "price": "US$19",
+        "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=300&fit=crop",
+        "documentationLink": "https://example.com/docs/ui-components",
+        "stripeLink": "https://buy.stripe.com/your-stripe-link-4"
+    },
+    {
+        "id": 5,
+        "name": "Algorithmic Trading Strategy Backtester - Multi-Period Validator",
+        "description": "A tool to analyze market sentiment using social media data.",
+        "price": "US$59",
+        "image": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=300&fit=crop",
+        "documentationLink": "https://example.com/docs/market-sentiment",
+        "stripeLink": "https://buy.stripe.com/your-stripe-link-5"
+    },
+    {
+        "id": 6,
+        "name": "Double Bottom Pattern Pro - Automated Trading Strategy",
+        "description": "An automated trading bot that executes trades based on predefined strategies.",
+        "price": "US$99",
+        "image": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=300&fit=crop",
+        "documentationLink": "https://example.com/docs/trading-bot",
+        "stripeLink": "https://buy.stripe.com/your-stripe-link-6"
+    }
+]
